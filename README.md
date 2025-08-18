@@ -1,4 +1,4 @@
-## NestJS Book Review API
+# NestJS Book Review API
 
 Simple NestJS server that provides a REST API for managing books and user-submitted reviews.
 
@@ -50,3 +50,21 @@ src/
       book.interface.ts
       review.interface.ts
 ```
+
+## Tests
+
+This project includes basic **unit tests** using Jest.
+
+### What is covered
+- `src/books/reviews.service.spec.ts` - unit tests for `ReviewsService`:
+  - add review
+  - filter by `bookId`
+  - average rating (or `null` if no reviews)
+  - delete all reviews for a book
+
+> Each test starts with a **fresh in-memory state** (`beforeEach` creates a new service instance), so tests are independent.
+
+### How to run
+```bash
+# run a specific test file
+npm run test -- src/books/reviews.service.spec.ts
