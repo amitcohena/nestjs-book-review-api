@@ -8,7 +8,7 @@ import {
   import { CreateReviewDto } from './dto/create-review.dto';
   import { ApiTags } from '@nestjs/swagger';
   
-  @ApiTags('books')            // swagger
+  @ApiTags('Books')            // swagger
   @Controller('books')
   export class BooksController {
     constructor(
