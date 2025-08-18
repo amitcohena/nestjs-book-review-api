@@ -8,6 +8,8 @@ npm install
 npm run start:dev
 # open http://localhost:3000
 ```
+### API Docs (Swagger)
+Open http://localhost:3000/docs
 
 ## Endpoints
 - GET /books
