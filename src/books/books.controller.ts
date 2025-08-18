@@ -6,7 +6,9 @@ import {
   import { CreateBookDto } from './dto/create-book.dto';
   import { UpdateBookDto } from './dto/update-book.dto';
   import { CreateReviewDto } from './dto/create-review.dto';
+  import { ApiTags } from '@nestjs/swagger';
   
+  @ApiTags('books')            // swagger
   @Controller('books')
   export class BooksController {
     constructor(
