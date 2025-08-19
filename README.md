@@ -37,10 +37,12 @@ Open http://localhost:3000/docs
 
 ## Examples (cURL)
 ```bash
+# create a few books
 curl -X POST http://localhost:3000/books   -H "Content-Type: application/json"   -d '{"title":"Book1","author":"Amit Cohen","year":2025}'
 curl -X POST http://localhost:3000/books   -H "Content-Type: application/json"   -d '{"title":"Book2","author":"Amit Cohen","year":2024}'
 curl -X POST http://localhost:3000/books   -H "Content-Type: application/json"   -d '{"title":"Book3","author":"Amit Cohen","year":2023}'
 
+# list / get / update / reviews / delete
 curl http://localhost:3000/books
 curl http://localhost:3000/books/1
 curl -X PUT http://localhost:3000/books/1 -H "Content-Type: application/json" -d '{"year":2015}'
@@ -69,11 +71,27 @@ curl "http://localhost:3000/books?author=Amit&sort=year&order=asc"
 curl "http://localhost:3000/books?minYear=2023&maxYear=2024&sort=year&order=asc"
 ```
 
+### Validation rules
+- **CreateBookDto**: 
+  - `title` (string, required)
+  - `author` (string, required)
+  - `year` (integer ≥ 0, required)
+- **UpdateBookDto**: partial of CreateBookDto (all fields optional)
+- **CreateReviewDto**:
+  - `rating` (integer 1-5, required)
+  - `comment` (string, optional)
+- Global `ValidationPipe` with `transform: true` and `enableImplicitConversion: true`:
+  - Query strings like `?year=2024` are converted to numbers automatically.
+
+
 ## Project Structure
 ```
 src/
   app.module.ts
   main.ts
+  common/
+    filters/
+      http-exception.filter.ts
   books/
     books.module.ts
     books.controller.ts
@@ -83,6 +101,7 @@ src/
       create-book.dto.ts
       update-book.dto.ts
       create-review.dto.ts
+      list-books.query.ts
     entities/
       book.interface.ts
       review.interface.ts
@@ -93,6 +112,13 @@ src/
 This project includes basic **unit tests** using Jest.
 
 ### What is covered
+- `src/books/books.service.spec.ts` — unit tests for `BooksService`:
+  - create a book
+  - find a book by `bookId` or 404
+  - partial update
+  - remove a book + delete all reviews for a book
+  - findAll filters (e.g. year range) and sorting
+
 - `src/books/reviews.service.spec.ts` - unit tests for `ReviewsService`:
   - add review
   - filter by `bookId`
@@ -105,6 +131,7 @@ This project includes basic **unit tests** using Jest.
 
 ```bash
 # run a specific test file
+npm run test -- src/books/books.service.spec.ts
 npm run test -- src/books/reviews.service.spec.ts
 ```
 
