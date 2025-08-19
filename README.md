@@ -38,6 +38,8 @@ Open http://localhost:3000/docs
 ## Examples (cURL)
 ```bash
 curl -X POST http://localhost:3000/books   -H "Content-Type: application/json"   -d '{"title":"Book1","author":"Amit Cohen","year":2025}'
+curl -X POST http://localhost:3000/books   -H "Content-Type: application/json"   -d '{"title":"Book2","author":"Amit Cohen","year":2024}'
+curl -X POST http://localhost:3000/books   -H "Content-Type: application/json"   -d '{"title":"Book3","author":"Amit Cohen","year":2023}'
 
 curl http://localhost:3000/books
 curl http://localhost:3000/books/1
@@ -46,6 +48,25 @@ curl -X POST http://localhost:3000/books/1/reviews -H "Content-Type: application
 curl http://localhost:3000/books/1/reviews
 curl http://localhost:3000/books/1/rating
 curl -X DELETE http://localhost:3000/books/1
+
+# Filter by author
+curl "http://localhost:3000/books?author=amit"
+
+# Filter by title (case-insensitive contains)
+curl "http://localhost:3000/books?title=Book1"
+
+# Exact year
+curl "http://localhost:3000/books?year=2024"
+
+# Year range (inclusive)
+curl "http://localhost:3000/books?minYear=2023&maxYear=2024"
+
+# Sort by year descending
+curl "http://localhost:3000/books?sort=year&order=desc"
+
+# Combine: filter + sort
+curl "http://localhost:3000/books?author=Amit&sort=year&order=asc"
+curl "http://localhost:3000/books?minYear=2023&maxYear=2024&sort=year&order=asc"
 ```
 
 ## Project Structure
