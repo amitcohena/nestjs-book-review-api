@@ -13,6 +13,19 @@ Open http://localhost:3000/docs
 
 ## Endpoints
 - GET /books
+### Filtering & Sorting (GET /books)
+Query params:
+- `author` / `title`
+- `year`
+- `minYear`, `maxYear` — inclusive year range (used only if `year` is absent)
+- `sort` — one of `id|title|author|year`
+- `order` — `asc` (default) or `desc`
+
+Examples:
+- `/books?author=Amit Cohen`
+- `/books?title=Book1&sort=year&order=desc`
+- `/books?minYear=2000&maxYear=2025`
+- `/books?year=2015`
 - POST /books
 - GET /books/:id
 - PUT /books/:id
