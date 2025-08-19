@@ -101,7 +101,22 @@ This project includes basic **unit tests** using Jest.
 
 > Each test starts with a **fresh in-memory state** (`beforeEach` creates a new service instance), so tests are independent.
 
-### How to run
+### How to run 
+
 ```bash
 # run a specific test file
 npm run test -- src/books/reviews.service.spec.ts
+```
+
+## Validation & Errors
+### Consistent error responses
+A global `HttpExceptionFilter` normalizes all errors (400/404/500) to a single JSON shape:
+```json
+{
+  "success": false,
+  "statusCode": 404,
+  "error": "Not Found",
+  "messages": ["Book not found"],
+  "path": "/books/999",
+  "timestamp": "2025-08-19T10:05:00.000Z"
+}
