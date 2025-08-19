@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'; // Swagger imports
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter'; 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,9 @@ async function bootstrap() {
     transformOptions: { enableImplicitConversion: true }, // Converts "2024" (string) to 2024 (number) using the DTO types
   }));
 
+  // Register our custom error filter globally
+  app.useGlobalFilters(new HttpExceptionFilter());
+  
   // Swagger setup
   const config = new DocumentBuilder()
     .setTitle('Book Review API')
