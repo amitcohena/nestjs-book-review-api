@@ -11,6 +11,7 @@ async function bootstrap() {
     whitelist: true,            // Strip properties that are not explicitly allowed in DTOs
     forbidNonWhitelisted: true, // Throw an error if non-allowed properties are provided
     transform: true,            // Automatically transform payloads to match DTO types
+    transformOptions: { enableImplicitConversion: true }, // Converts "2024" (string) to 2024 (number) using the DTO types
   }));
 
   // Swagger setup
