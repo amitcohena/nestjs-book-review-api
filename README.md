@@ -22,10 +22,11 @@ Query params:
 - `order` — `asc` (default) or `desc`
 
 Examples:
-- `/books?author=Amit Cohen`
-- `/books?title=Book1&sort=year&order=desc`
-- `/books?minYear=2000&maxYear=2025`
-- `/books?year=2015`
+  - `/books?author=Amit Cohen`
+  - `/books?title=Book1&sort=year&order=desc`
+  - `/books?minYear=2000&maxYear=2025`
+  - `/books?year=2015`
+  
 - POST /books
 - GET /books/:id
 - PUT /books/:id
