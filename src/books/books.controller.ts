@@ -1,14 +1,22 @@
 import {
-    Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe,
+    Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe, Query
   } from '@nestjs/common';
   import { BooksService } from './books.service';
   import { ReviewsService } from './reviews.service';
   import { CreateBookDto } from './dto/create-book.dto';
   import { UpdateBookDto } from './dto/update-book.dto';
   import { CreateReviewDto } from './dto/create-review.dto';
-  import { ApiTags } from '@nestjs/swagger';
+  import { ApiTags, ApiQuery } from '@nestjs/swagger';
+  import { ListBooksQuery } from './dto/list-books.query';
   
   @ApiTags('Books')            // swagger
+  @ApiQuery({ name: 'author', required: false, type: String })
+  @ApiQuery({ name: 'title', required: false, type: String })
+  @ApiQuery({ name: 'year', required: false, type: Number })
+  @ApiQuery({ name: 'minYear', required: false, type: Number })
+  @ApiQuery({ name: 'maxYear', required: false, type: Number })
+  @ApiQuery({ name: 'sort', required: false, enum: ['id','title','author','year'] })
+  @ApiQuery({ name: 'order', required: false, enum: ['asc','desc'] })
   @Controller('books')
   export class BooksController {
     constructor(
@@ -18,8 +26,8 @@ import {
   
     // GET /books - list all books
     @Get()
-    getAll() {
-      return this.booksService.findAll();
+    getAll(@Query() q: ListBooksQuery) {
+      return this.booksService.findAll(q);
     }
   
     // POST /books - create a new book

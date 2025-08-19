@@ -3,6 +3,7 @@ import { Book } from './entities/book.interface';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { ReviewsService } from './reviews.service';
+import { ListBooksQuery } from './dto/list-books.query';
 
 @Injectable()
 export class BooksService {
@@ -12,8 +13,49 @@ export class BooksService {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   // Return all books
-  findAll(): Book[] {
-    return this.books;
+  findAll(q?: ListBooksQuery): Book[] {
+    let list = [...this.books];
+
+    if (q) {
+      if (q.author) {
+        const needle = q.author.toLowerCase();
+        list = list.filter(b => b.author.toLowerCase().includes(needle));
+      }
+      if (q.title) {
+        const needle = q.title.toLowerCase();
+        list = list.filter(b => b.title.toLowerCase().includes(needle));
+      }
+
+    if (typeof q.year === 'number') {
+      const y = q.year; // local copy
+      list = list.filter(b => b.year === y);
+    } else {
+      const min = q.minYear;
+      const max = q.maxYear;
+
+      if (typeof min === 'number') {
+        list = list.filter(b => b.year >= min);
+      }
+      if (typeof max === 'number') {
+        list = list.filter(b => b.year <= max);
+      }
+    }
+
+      if (q.sort) {
+        const key = q.sort as keyof Book;
+        const dir = (q.order || 'asc').toLowerCase() === 'desc' ? -1 : 1;
+
+        list.sort((a: Book, b: Book) => {
+          const av = a[key] as any;
+          const bv = b[key] as any;
+          if (av < bv) return -1 * dir;
+          if (av > bv) return 1 * dir;
+          return 0;
+        });
+      }
+    }
+
+    return list;
   }
 
   // Return a single book by id or throw 404 if not found
